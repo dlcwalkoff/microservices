@@ -1,9 +1,14 @@
 FROM alpine:3.6
-RUN apk update \
-    && apk add alpine-sdk ruby ruby-dev --no-cache \
-    && gem install bundler --no-ri --no-rdoc
 
+ENV BUILD_PACKAGES bash curl-dev ruby-dev build-base
+ENV RUBY_PACKAGES ruby ruby-io-console ruby-bundler
 ENV APP_HOME /app
+
+RUN apk update && \
+    apk upgrade && \
+    apk add $BUILD_PACKAGES && \
+    apk add $RUBY_PACKAGES && \
+    rm -rf /var/cache/apk/*
 
 RUN mkdir $APP_HOME
 
